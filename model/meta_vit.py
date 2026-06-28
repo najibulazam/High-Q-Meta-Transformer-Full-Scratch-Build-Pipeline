@@ -4,14 +4,14 @@ import torch.nn as nn
 from model.spec_vit import TransformerEncoderLayer
 
 class MetaViT(nn.Module):
-    def __init__(self, spectrum_points=300, num_parameters=5, embed_dim=128, num_heads=4, depth=3):
+    def __init__(self, spectrum_points=1000, num_parameters=5, embed_dim=128, num_heads=8, depth=6, dim_feedforward=128):
         super().__init__()
         self.input_projection = nn.Linear(spectrum_points, embed_dim)
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
         self.pos_embedding = nn.Parameter(torch.zeros(1, 2, embed_dim))
         
         self.layers = nn.ModuleList([
-            TransformerEncoderLayer(embed_dim, num_heads, dim_feedforward=embed_dim*2)
+            TransformerEncoderLayer(embed_dim, num_heads, dim_feedforward=dim_feedforward)
             for _ in range(depth)
         ])
         

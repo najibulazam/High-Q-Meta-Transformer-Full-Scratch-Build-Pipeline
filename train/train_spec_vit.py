@@ -18,16 +18,17 @@ def train():
     os.makedirs("saved_models", exist_ok=True)
     joblib.dump(scaler_geo, "saved_models/scaler_geo.pkl")
     
+    spec_cfg = config['model']['spec_vit']
     model = SpecViT(
         num_parameters=config['model']['num_parameters'],
         spectrum_points=config['simulation']['wavelength_points'],
-        embed_dim=config['model']['embed_dim'],
-        num_heads=config['model']['num_heads'],
-        depth=config['model']['depth']
+        embed_dim=spec_cfg['embed_dim'],
+        num_heads=spec_cfg['num_heads'],
+        depth=spec_cfg['depth']
     ).to(device)
     
     criterion = nn.MSELoss()
-    optimizer = optim.AdamW(model.parameters(), lr=config['model']['learning_rate'], weight_decay=1e-4)
+    optimizer = optim.Adam(model.parameters(), lr=config['model']['learning_rate'])
     
     best_loss = float('inf')
     for epoch in range(config['model']['epochs']):

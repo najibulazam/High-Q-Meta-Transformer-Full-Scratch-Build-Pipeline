@@ -21,14 +21,29 @@ def train():
         raise FileNotFoundError(f"Pretrained SpecViT model not found at '{spec_vit_path}'! Please run 'python -m train.train_spec_vit' first.")
 
     # Load Pre-trained SpecViT for Spectrum-Matching Loss
-    forward_model = SpecViT().to(device)
+    spec_cfg = config['model']['spec_vit']
+    forward_model = SpecViT(
+        num_parameters=config['model']['num_parameters'],
+        spectrum_points=config['simulation']['wavelength_points'],
+        embed_dim=spec_cfg['embed_dim'],
+        num_heads=spec_cfg['num_heads'],
+        depth=spec_cfg['depth']
+    ).to(device)
     forward_model.load_state_dict(torch.load(spec_vit_path, map_location=device))
     forward_model.eval()
     for p in forward_model.parameters():
         p.requires_grad = False
         
-    model = MetaViT().to(device)
-    optimizer = optim.AdamW(model.parameters(), lr=config['model']['learning_rate'], weight_decay=1e-4)
+    meta_cfg = config['model']['meta_vit']
+    model = MetaViT(
+        spectrum_points=config['simulation']['wavelength_points'],
+        num_parameters=config['model']['num_parameters'],
+        embed_dim=meta_cfg['embed_dim'],
+        num_heads=meta_cfg['num_heads'],
+        depth=meta_cfg['depth'],
+        dim_feedforward=meta_cfg['dim_feedforward']
+    ).to(device)
+    optimizer = optim.Adam(model.parameters(), lr=config['model']['learning_rate'])
     
     criterion_geo = nn.MSELoss()
     criterion_spec = nn.MSELoss()

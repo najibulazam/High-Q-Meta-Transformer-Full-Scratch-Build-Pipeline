@@ -22,7 +22,19 @@ def predict():
     target_df = pd.read_csv(target_csv)
     specs = torch.tensor(target_df.values, dtype=torch.float32).to(device)
     
-    inverse_model = MetaViT()
+    import yaml
+    with open("config.yaml", "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+    
+    meta_cfg = config['model']['meta_vit']
+    inverse_model = MetaViT(
+        spectrum_points=config['simulation']['wavelength_points'],
+        num_parameters=config['model']['num_parameters'],
+        embed_dim=meta_cfg['embed_dim'],
+        num_heads=meta_cfg['num_heads'],
+        depth=meta_cfg['depth'],
+        dim_feedforward=meta_cfg['dim_feedforward']
+    ).to(device)
     inverse_model.load_state_dict(torch.load(model_path, map_location=device))
     inverse_model.eval()
     

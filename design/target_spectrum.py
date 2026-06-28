@@ -15,8 +15,8 @@ def generate_fano_qbic_target():
     wavelengths = np.linspace(w_start, w_end, points)
     
     # Generate Synthetic High-Q Fano Resonance Profile
-    w_0 = 3950.0  # Peak center
-    gamma = 15.0  # Narrow linewidth for High-Q
+    w_0 = 6000.0  # Peak center (6 um per Section 7)
+    gamma = 20.0  # Narrow linewidth for High-Q
     q_parameter = -1.2
     
     epsilon = (wavelengths - w_0) / gamma

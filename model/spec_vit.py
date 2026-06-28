@@ -23,14 +23,14 @@ class TransformerEncoderLayer(nn.Module):
         return src
 
 class SpecViT(nn.Module):
-    def __init__(self, num_parameters=5, spectrum_points=300, embed_dim=128, num_heads=4, depth=3):
+    def __init__(self, num_parameters=5, spectrum_points=1000, embed_dim=64, num_heads=8, depth=6, dim_feedforward=128):
         super().__init__()
         self.input_projection = nn.Linear(num_parameters, embed_dim)
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
         self.pos_embedding = nn.Parameter(torch.zeros(1, 2, embed_dim))
         
         self.layers = nn.ModuleList([
-            TransformerEncoderLayer(embed_dim, num_heads, dim_feedforward=embed_dim*2)
+            TransformerEncoderLayer(embed_dim, num_heads, dim_feedforward=dim_feedforward)
             for _ in range(depth)
         ])
         
