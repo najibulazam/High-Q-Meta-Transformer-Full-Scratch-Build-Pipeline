@@ -1,0 +1,16 @@
+high_q_meta_transformer/
+├─ config.yaml                       # নতুন quasi-BIC ও স্পেকট্রামের কনফিগারেশন
+├─ requirements.txt
+├─ fdtd/
+│  ├─ setup_qBIC_cell.py             # quasi-BIC ইউনিট সেল জেনারেশন (অ্যাসিমেট্রি সহ)
+│  └─ run_spectral_sweep.py          # লুমেরিকালের মাধ্যমে স্পেকট্রাম ($T$) ডাটা সংগ্রহ
+├─ model/
+│  ├─ spec_vit.py                    # SpecViT: Forward Model (Geometry -> Spectrum)
+│  └─ meta_vit.py                    # MetaViT: Inverse Model (Spectrum -> Geometry)
+├─ train/
+│  ├─ spectral_dataset.py            # ১ডি স্পেকট্রাল ডাটা লোডার
+│  ├─ train_spec_vit.py              # Forward মডেল ট্রেনিং
+│  └─ train_meta_vit.py              # Inverse মডেল ট্রেনিং (Spectrum-matching loss সহ)
+└─ design/
+   ├─ target_spectrum.py             # কাঙ্ক্ষিত হাই-কিউ স্পেকট্রাল রেসপন্স তৈরি
+   └─ predict_geometry.py            # টার্গেট স্পেকট্রাম থেকে ওয়ান-শট জিওমেট্রি প্রেডিকশন

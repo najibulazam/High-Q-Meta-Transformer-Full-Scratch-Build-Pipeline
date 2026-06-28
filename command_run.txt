@@ -1,0 +1,3 @@
+python -m fdtd.run_spectral_sweep
+
+

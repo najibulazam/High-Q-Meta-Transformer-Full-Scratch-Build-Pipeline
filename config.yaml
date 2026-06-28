@@ -1,0 +1,23 @@
+project:
+  name: "high_q_meta_transformer"
+  dataset_dir: "dataset"
+  output_csv: "dataset/qBIC_spectral_data.csv"
+
+simulation:
+  wavelength_start_nm: 3000
+  wavelength_end_nm: 5000
+  wavelength_points: 300
+  mesh_accuracy: 2
+
+dataset:
+  num_samples: 100
+  test_size: 0.15
+  batch_size: 32
+
+model:
+  num_parameters: 5
+  embed_dim: 128
+  num_heads: 4
+  depth: 3
+  learning_rate: 0.0005
+  epochs: 100
